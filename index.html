@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="あつまれ どうぶつの森（あつ森）のとたけけ楽曲 所持チェッカーツール。全107曲の所持状況を簡単管理！">
+  <title>あつ森 とたけけ楽曲所持チェッカー v1.2</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+</head>
+<body>
+
+  <!-- ====== Loading Screen ====== -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-content">
+      <div class="loading-leaf" aria-hidden="true">🍃</div>
+      <div class="loading-icon" aria-hidden="true">🎸</div>
+      <h2 class="loading-title">あつ森 とたけけ楽曲所持チェッカー</h2>
+      <p class="loading-subtitle">v1.2</p>
+      <!-- Start button (solves autoplay restriction) -->
+      <button class="loading-start-btn" id="loadingStartBtn">
+        <span class="loading-start-icon">▶</span>
+        <span>はじめる</span>
+      </button>
+      <!-- Progress (hidden until start) -->
+      <div class="loading-progress-area" id="loadingProgressArea">
+        <div class="loading-bar-wrap">
+          <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <div class="loading-percent" id="loadingPercent">0%</div>
+      </div>
+      <div class="loading-welcome" id="loadingWelcome">
+        <p class="welcome-text">Welcome to Animal Crossing: New Horizons!</p>
+      </div>
+    </div>
+    <div class="loading-deco loading-deco-1" aria-hidden="true">🌿</div>
+    <div class="loading-deco loading-deco-2" aria-hidden="true">🍀</div>
+    <div class="loading-deco loading-deco-3" aria-hidden="true">🎵</div>
+    <div class="loading-deco loading-deco-4" aria-hidden="true">🌸</div>
+  </div>
+
+  <!-- ====== Main App (hidden during loading) ====== -->
+  <div class="app-wrapper" id="appWrapper">
+
+    <!-- Floating decorations -->
+    <div class="floating-deco deco-1" aria-hidden="true">🍃</div>
+    <div class="floating-deco deco-2" aria-hidden="true">🌿</div>
+    <div class="floating-deco deco-3" aria-hidden="true">🍀</div>
+    <div class="floating-deco deco-4" aria-hidden="true">🎵</div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-icon" aria-hidden="true">🎸</div>
+        <h1>あつ森 とたけけ楽曲所持チェッカー</h1>
+        <p class="subtitle">v1.2 — とたけけ全107曲の所持状況を管理しよう</p>
+      </div>
+      <!-- Settings button -->
+      <button class="btn-settings" id="btnSettings" title="設定">
+        <span>⚙️</span>
+      </button>
+    </header>
+
+    <!-- Progress -->
+    <section class="progress-section">
+      <div class="progress-card">
+        <div class="progress-header">
+          <span class="progress-label">📀 コレクション進捗</span>
+          <div class="progress-count">
+            <span class="current" id="progressCurrent">0</span>
+            <span class="separator">/</span>
+            <span class="total" id="progressTotal">107</span>
+            <span class="unit">曲</span>
+          </div>
+          <span class="progress-percentage" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+        <div class="bulk-actions">
+          <button class="btn-bulk btn-select-all" id="btnSelectAll">✅ 全て所持</button>
+          <button class="btn-bulk btn-deselect-all" id="btnDeselectAll">🔄 全て解除</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filter-section">
+      <div class="filter-card">
+        <!-- Search -->
+        <div class="search-wrapper">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="text" class="search-input" id="searchInput" placeholder="楽曲名で検索..." autocomplete="off">
+          <button class="search-clear" id="searchClear" aria-label="検索クリア">✕</button>
+        </div>
+
+        <!-- Status filter -->
+        <div class="filter-group">
+          <span class="filter-group-label">所持状態</span>
+          <div class="filter-pills">
+            <button class="filter-pill active" data-status="all">すべて</button>
+            <button class="filter-pill" data-status="owned">✅ 所持済</button>
+            <button class="filter-pill" data-status="unowned">⬜ 未所持</button>
+          </div>
+        </div>
+
+        <!-- Kana filter -->
+        <div class="filter-group">
+          <span class="filter-group-label">50音</span>
+          <div class="filter-pills kana-pills">
+            <button class="filter-pill active" data-kana="all">すべて</button>
+            <button class="filter-pill" data-kana="あ">あ行</button>
+            <button class="filter-pill" data-kana="か">か行</button>
+            <button class="filter-pill" data-kana="さ">さ行</button>
+            <button class="filter-pill" data-kana="た">た行</button>
+            <button class="filter-pill" data-kana="な">な行</button>
+            <button class="filter-pill" data-kana="は">は行</button>
+            <button class="filter-pill" data-kana="ま">ま行</button>
+            <button class="filter-pill" data-kana="や">や行</button>
+            <button class="filter-pill" data-kana="ら">ら行</button>
+            <button class="filter-pill" data-kana="わ">わ行・他</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Song List -->
+    <section class="song-list-section">
+      <div class="song-count-info" id="songCountInfo">107 曲を表示中</div>
+      <div class="song-grid" id="songGrid"></div>
+      <div class="no-results" id="noResults">
+        <div class="no-results-icon">🔎</div>
+        <div class="no-results-text">該当する楽曲がありません</div>
+        <div class="no-results-sub">検索条件やフィルターを変更してみてください</div>
+      </div>
+    </section>
+
+    <!-- Celebration overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay"></div>
+
+    <!-- Album preview modal -->
+    <div class="modal-overlay" id="albumPreviewOverlay">
+      <div class="album-preview-content" id="albumPreviewContent">
+        <button class="modal-close album-preview-close" id="albumPreviewClose" aria-label="閉じる">✕</button>
+        <div class="album-preview-img-wrap">
+          <img class="album-preview-img" id="albumPreviewImg" src="" alt="">
+          <div class="album-preview-placeholder" id="albumPreviewPlaceholder">🎵</div>
+        </div>
+        <div class="album-preview-name" id="albumPreviewName"></div>
+      </div>
+    </div>
+
+    <!-- Changelog modal -->
+    <div class="modal-overlay" id="changelogOverlay">
+      <div class="modal-content" id="changelogModal">
+        <div class="modal-header">
+          <h2>📋 更新履歴</h2>
+          <button class="modal-close" id="changelogClose" aria-label="閉じる">✕</button>
+        </div>
+        <div class="modal-body" id="changelogBody">
+          <!-- Changelog entries are inserted by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- About modal -->
+    <div class="modal-overlay" id="aboutOverlay">
+      <div class="modal-content about-modal-content" id="aboutModal">
+        <div class="modal-header about-header">
+          <h2>ℹ️ このサイトについて</h2>
+          <div class="header-actions">
+            <div class="lang-toggle-wrap">
+              <span class="lang-label jp-label active">JP</span>
+              <button class="lang-toggle-btn" id="langToggleBtn" aria-label="言語切替">
+                <span class="lang-toggle-slider"></span>
+              </button>
+              <span class="lang-label en-label">EN</span>
+            </div>
+            <button class="modal-close" id="aboutClose" aria-label="閉じる">✕</button>
+          </div>
+        </div>
+        <div class="modal-body about-body">
+          <!-- Japanese Content -->
+          <div class="about-content lang-jp" id="aboutJp">
+            <section class="about-section">
+              <h3>このサイトについて</h3>
+              <p>本サイトは、Nintendo Switch用ゲーム『あつまれ どうぶつの森』に登場するミュージシャン「とたけけ」の楽曲の所持状況を確認・管理するための非公式ファンツールです。</p>
+              <p>ゲーム内には多数の楽曲が存在しており、プレイヤーが自分のコレクション状況を把握することが難しい場合があります。本ツールは、チェック形式で楽曲の所持状況を整理・管理できるようにすることを目的として制作されています。</p>
+              <p>本サイトは個人のファン活動の一環として制作・公開されているものであり、任天堂株式会社および関連会社とは一切関係ありません。また、本サイトは任天堂株式会社による公式の承認・提携・スポンサーシップを受けているものではありません。</p>
+            </section>
+
+            <section class="about-section">
+              <h3>著作権および知的財産権について</h3>
+              <p>『あつまれ どうぶつの森』に関連するゲームタイトル、キャラクター、楽曲タイトル、ロゴ、画像、音声、ゲーム内デザインなどの著作権・商標権およびその他の知的財産権は、すべて任天堂株式会社および各権利者に帰属します。</p>
+              <p>本サイトでは、ゲームの内容を説明・整理する目的で、以下のような素材を使用する場合があります。</p>
+              <ul class="about-list">
+                <li>ゲーム画面のスクリーンショット</li>
+                <li>ゲーム内アイコンや画像</li>
+                <li>楽曲名やキャラクター名などのゲーム内名称</li>
+                <li>ゲーム内音声や効果音の引用</li>
+              </ul>
+              <p>これらの素材は、ファンコンテンツとしての情報提供および説明を目的として引用・紹介しているものであり、著作権や商標権などの権利侵害を意図したものではありません。</p>
+              <p>万が一、掲載内容に問題がある場合や権利上の問題が懸念される場合には、適切な対応を行いますのでご連絡ください。</p>
+            </section>
+
+            <section class="about-section">
+              <h3>免責事項</h3>
+              <p>本サイトに掲載されている情報は、可能な限り正確な内容を提供するよう努めていますが、ゲームのアップデートや仕様変更などにより実際のゲーム内容と異なる場合があります。</p>
+              <p>本サイトの情報の正確性・完全性・最新性について保証するものではありません。</p>
+              <p>本サイトの利用によって生じたいかなる損害、トラブル、データ損失などについても、サイト制作者は一切の責任を負いません。また、本サイトの内容は予告なく変更・修正・公開停止される場合があります。</p>
+            </section>
+
+            <section class="about-section">
+              <h3>プライバシーポリシー</h3>
+              <p>本サイトでは、個人情報を収集する機能は基本的に提供していません。</p>
+              <p>ただし、サイトの改善や運営のために、アクセス解析などの技術的な仕組みを利用する場合があります。これらの仕組みでは、Cookieなどを利用して匿名のトラフィックデータを収集することがあります。収集される情報には、以下のようなものが含まれる場合があります。</p>
+              <ul class="about-list">
+                <li>アクセス日時</li>
+                <li>利用ブラウザ・利用端末</li>
+                <li>閲覧ページ</li>
+              </ul>
+              <p>これらの情報は個人を特定するものではなく、サイト改善の目的のみに利用されます。</p>
+            </section>
+
+            <section class="about-section">
+              <h3>外部利用素材・サービス</h3>
+              <p>本サイトでは、以下の外部サービスおよび素材を利用しています：</p>
+              <ul class="about-list">
+                <li>GitHub Pages, CDN, Webフォントサービス</li>
+                <li><strong>アルバム画像引用元:</strong> <a href="https://nookipedia.com/wiki/" target="_blank" rel="noopener noreferrer">Nookipedia</a></li>
+                <li><strong>効果音引用元:</strong> <a href="https://sounds.spriters-resource.com/nintendo_switch/animalcrossingnewhorizons/" target="_blank" rel="noopener noreferrer">The Spriters Resource</a></li>
+                <li><strong>BGM Remix:</strong> <a href="https://www.youtube.com/@qumumusic/videos" target="_blank" rel="noopener noreferrer">Qumu Music (YouTube)</a></li>
+              </ul>
+            </section>
+
+            <section class="about-section">
+              <h3>AIによる開発支援について</h3>
+              <p>本ツールの開発にあたり、以下のAIツールおよびモデルを活用しています。</p>
+              <ul class="about-list">
+                <li>
+                  <strong>開発ツール: Google Antigravity</strong> (AIエージェント型コーディングアシスタント)<br>
+                  <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer">公式サイト</a>
+                </li>
+              </ul>
+              <p style="font-size: 0.88rem; color: var(--color-text); margin-bottom: 8px;"><strong>使用AIモデル:</strong></p>
+              <ul class="about-list">
+                <li>
+                  <strong>Gemini シリーズ</strong> (Gemini 3.1 Pro High/Low, Gemini 3 Flash)<br>
+                  提供: Google | <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">公式サイト</a> | <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">利用規約</a> | <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
+                </li>
+                <li style="margin-top: 6px;">
+                  <strong>Claude シリーズ</strong> (Claude Sonnet 4.6 Thinking, Claude Opus 4.6 Thinking)<br>
+                  提供: Anthropic | <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer">公式サイト</a> | <a href="https://www.anthropic.com/legal/consumer-terms" target="_blank" rel="noopener noreferrer">利用規約</a> | <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
+                </li>
+                <li style="margin-top: 6px;">
+                  <strong>オープンソースモデル</strong> (GPT-OSS 120B Medium)<br>
+                  (Antigravity統合モデルとして利用)
+                </li>
+              </ul>
+            </section>
+
+            <section class="about-section credits-section">
+              <h3>クレジット</h3>
+              <p><strong>ゲーム:</strong><br>『あつまれ どうぶつの森』</p>
+              <p><strong>開発・販売:</strong><br>任天堂株式会社</p>
+              <p class="credits-notice">ゲーム内に登場するキャラクター、音楽、画像、名称などの著作権および知的財産権は、すべて任天堂株式会社および各権利者に帰属します。</p>
+            </section>
+          </div>
+
+          <!-- English Content -->
+          <div class="about-content lang-en hidden" id="aboutEn">
+            <section class="about-section">
+              <h3>About This Website</h3>
+              <p>This website is an unofficial fan-made tool designed to help players track and manage the songs performed by K.K. Slider in the Nintendo Switch game "Animal Crossing: New Horizons".</p>
+              <p>The game contains many collectible songs, and it can be difficult for players to keep track of which songs they have already obtained. This tool provides a checklist-style interface that allows users to organize and track their collection.</p>
+              <p>This website is a personal fan project and is not affiliated with, endorsed by, or sponsored by Nintendo Co., Ltd. or any related companies.</p>
+            </section>
+
+            <section class="about-section">
+              <h3>Copyright and Intellectual Property</h3>
+              <p>All trademarks, copyrights, and intellectual property related to "Animal Crossing: New Horizons", including characters, music titles, images, audio, and other in-game assets, belong to Nintendo Co., Ltd. and their respective rights holders.</p>
+              <p>This website may include references to materials such as:</p>
+              <ul class="about-list">
+                <li>Game screenshots</li>
+                <li>In-game icons or images</li>
+                <li>Song titles and character names</li>
+                <li>Audio or sound references</li>
+              </ul>
+              <p>These materials are used for informational and fan-content purposes only. No copyright infringement is intended.</p>
+              <p>If any copyright holder believes that content on this website violates their rights, please contact the site administrator and the content will be reviewed or removed as appropriate.</p>
+            </section>
+
+            <section class="about-section">
+              <h3>Disclaimer</h3>
+              <p>The information provided on this website is intended to be as accurate as possible. However, due to game updates or specification changes, some information may differ from the actual game.</p>
+              <p>The site owner does not guarantee the accuracy, completeness, or reliability of the information provided.</p>
+              <p>The site owner is not responsible for any damages, problems, or data loss that may occur as a result of using this website. The contents of this website may also be modified or removed without notice.</p>
+            </section>
+
+            <section class="about-section">
+              <h3>Privacy Policy</h3>
+              <p>This website does not intentionally collect personally identifiable information.</p>
+              <p>However, certain technical information may be automatically collected for website operation or analytics purposes. This may include the use of cookies or similar technologies. The collected data may include:</p>
+              <ul class="about-list">
+                <li>Access date and time</li>
+                <li>Browser type & Device information</li>
+                <li>Pages visited</li>
+              </ul>
+              <p>This information is used only for improving the website and cannot be used to identify individual users.</p>
+            </section>
+
+            <section class="about-section">
+              <h3>External Resources & Services</h3>
+              <p>This website uses the following external services and materials:</p>
+              <ul class="about-list">
+                <li>GitHub Pages, CDN services, Web fonts</li>
+                <li><strong>Album Artworks:</strong> referenced from <a href="https://nookipedia.com/wiki/" target="_blank" rel="noopener noreferrer">Nookipedia</a></li>
+                <li><strong>Sound Effects:</strong> referenced from <a href="https://sounds.spriters-resource.com/nintendo_switch/animalcrossingnewhorizons/" target="_blank" rel="noopener noreferrer">The Spriters Resource</a></li>
+                <li><strong>BGM Remix:</strong> <a href="https://www.youtube.com/@qumumusic/videos" target="_blank" rel="noopener noreferrer">Qumu Music (YouTube)</a></li>
+              </ul>
+            </section>
+
+            <section class="about-section">
+              <h3>AI-Assisted Development</h3>
+              <p>The development of this tool was assisted by the following AI tools and models.</p>
+              <ul class="about-list">
+                <li>
+                  <strong>Development Tool: Google Antigravity</strong> (Agentic AI coding assistant)<br>
+                  <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer">Official Website</a>
+                </li>
+              </ul>
+              <p style="font-size: 0.88rem; color: var(--color-text); margin-bottom: 8px;"><strong>AI Models Used:</strong></p>
+              <ul class="about-list">
+                <li>
+                  <strong>Gemini Series</strong> (Gemini 3.1 Pro High/Low, Gemini 3 Flash)<br>
+                  By Google | <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">Website</a> | <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a> | <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                </li>
+                <li style="margin-top: 6px;">
+                  <strong>Claude Series</strong> (Claude Sonnet 4.6 Thinking, Claude Opus 4.6 Thinking)<br>
+                  By Anthropic | <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer">Website</a> | <a href="https://www.anthropic.com/legal/consumer-terms" target="_blank" rel="noopener noreferrer">Terms of Service</a> | <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                </li>
+                <li style="margin-top: 6px;">
+                  <strong>Open Source Models</strong> (GPT-OSS 120B Medium)<br>
+                  (Integrated via Antigravity)
+                </li>
+              </ul>
+            </section>
+
+            <section class="about-section credits-section">
+              <h3>Credits</h3>
+              <p><strong>Game:</strong><br>Animal Crossing: New Horizons</p>
+              <p><strong>Developed & Published by:</strong><br>Nintendo Co., Ltd.</p>
+              <p class="credits-notice">All game-related assets, including characters, music, images, and names, belong to Nintendo and their respective rights holders.</p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings modal -->
+    <div class="modal-overlay" id="settingsOverlay">
+      <div class="modal-content" id="settingsModal">
+        <div class="modal-header">
+          <h2>⚙️ 設定</h2>
+          <button class="modal-close" id="settingsClose" aria-label="閉じる">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="settings-group">
+            <div class="settings-item">
+              <div class="settings-item-info">
+                <span class="settings-item-icon">🎵</span>
+                <div>
+                  <div class="settings-item-label">BGM</div>
+                  <div class="settings-item-desc">バックグラウンドミュージックの再生</div>
+                </div>
+              </div>
+              <button class="toggle-btn active" id="toggleBGM" aria-label="BGM切替">
+                <span class="toggle-icon toggle-on">🎵</span>
+                <span class="toggle-icon toggle-off">🔇</span>
+                <span class="toggle-slider"></span>
+              </button>
+            </div>
+            <div class="settings-item">
+              <div class="settings-item-info">
+                <span class="settings-item-icon">📢</span>
+                <div>
+                  <div class="settings-item-label">効果音 (SE)</div>
+                  <div class="settings-item-desc">チェック・コンプリート時の効果音</div>
+                </div>
+              </div>
+              <button class="toggle-btn active" id="toggleSE" aria-label="SE切替">
+                <span class="toggle-icon toggle-on">📢</span>
+                <span class="toggle-icon toggle-off">🔇</span>
+                <span class="toggle-slider"></span>
+              </button>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-item">
+              <div class="settings-item-info">
+                <span class="settings-item-icon">⏭️</span>
+                <div>
+                  <div class="settings-item-label">次の曲にスキップ</div>
+                  <div class="settings-item-desc">現在再生中のBGMをスキップします</div>
+                </div>
+              </div>
+              <button class="btn-skip" id="btnSkipTrack" aria-label="スキップ">
+                <span>⏭️</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Changelog FAB -->
+    <button class="fab-changelog" id="btnChangelog" title="更新履歴">
+      <span class="fab-icon">📋</span>
+      <span class="fab-text">更新履歴</span>
+    </button>
+
+    <!-- About FAB -->
+    <button class="fab-about" id="btnAbout" title="このサイトについて">
+      <span class="fab-icon">ℹ️</span>
+      <span class="fab-text">About</span>
+    </button>
+
+    <!-- BGM Now Playing toast -->
+    <div class="bgm-toast" id="bgmToast">
+      <div class="bgm-toast-icon">🎵</div>
+      <div class="bgm-toast-info">
+        <div class="bgm-toast-label">Now Playing</div>
+        <div class="bgm-toast-name" id="bgmToastName"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">
+        made by <a href="https://github.com/h1ro223" target="_blank" rel="noopener noreferrer" class="footer-link">hiro/ヒロ</a>
+        &nbsp;|&nbsp; Animal Crossing: New Horizons &copy; Nintendo
+      </p>
+      <div class="footer-links">
+        <button class="btn-footer-link" id="btnFooterAbout">ℹ️ このサイトについて (About)</button>
+      </div>
+    </footer>
+
+  </div><!-- /app-wrapper -->
+
+  <script src="./script.js"></script>
+</body>
+</html>
