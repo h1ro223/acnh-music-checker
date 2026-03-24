@@ -1,6 +1,6 @@
-# acnh-music-checker
+# 第5作 あつ森 とたけけ楽曲所持チェッカー
+
 あつまれ どうぶつの森のとたけけ楽曲の所持チェッカーです。
-こちらから→https://h1ro223.github.io/acnh-music-checker/
 
 このサイトについて
 本サイトは、Nintendo Switch用ゲーム『あつまれ どうぶつの森』に登場するミュージシャン「とたけけ」の楽曲の所持状況を確認・管理するための非公式ファンツールです。
@@ -58,3 +58,7 @@ Claude シリーズ (Claude Sonnet 4.6 Thinking, Claude Opus 4.6 Thinking)
 提供: Anthropic
 オープンソースモデル (GPT-OSS 120B Medium)
 (Antigravity統合モデルとして利用)
+
+------------------------------------------------
+
+# ここから https://h1ro223.github.io/acnh-music-checker/
